@@ -1,5 +1,5 @@
-#include "RTC.h"
 #include "LCD.h"
+#include "RTC.h"
 #include "Memory.h"
 #include "GUIs.h"
 #include "Buttons.h"
@@ -8,12 +8,13 @@
 
 void setup() { 
  initRTC();
+ initEEPROM();
  initLCD();
  initButtons();
- initEEPROM();
  initMotor();
 }
 
 void loop() { 
  buttonLoop();
+ RTCloop();
 }

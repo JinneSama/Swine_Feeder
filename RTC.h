@@ -1,6 +1,10 @@
 #include "RTClib.h"
+#include <Wire.h>
+#include <Arduino.h>
 
-RTC_DS1307  rtc;
+#define INT_PIN 2
+
+RTC_DS3231  rtc;
 
 struct TimeData {
   int _hour;
@@ -10,10 +14,36 @@ struct TimeData {
 };
 
 TimeData timeData;
+TimeData timerData[3];
+
+int currentAlarmIndex = 0;
+
+int compareIndices(const void *a, const void *b);
+void sortData(int index);
+
+void handleAlarm() {
+  currentAlarmIndex = (currentAlarmIndex + 1) % 3;
+}
+void setAlarm(){
+  sortData(currentAlarmIndex);
+}
 
 void initRTC() {
   rtc.begin();
-  //rtc.setTime(19, 15, 0); 
+  pinMode(INT_PIN, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(INT_PIN), handleAlarm, FALLING);
+  if(rtc.lostPower()) {
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  }
+
+  rtc.disable32K();
+  
+  rtc.clearAlarm(1);
+  rtc.clearAlarm(2);
+
+  rtc.writeSqwPinMode(DS3231_OFF);
+  rtc.disableAlarm(2);
+  setAlarm();
 }
 
 String getTimeRTC(){
@@ -30,4 +60,19 @@ String getTimeRTC(){
   }
   sprintf(_timeNow,"%02d:%02d:%02d %cM",_hour,_time.minute(),_time.second(),amp);
   return _timeNow;
+}
+
+void sortData(int index){
+  int _hour = timerData[index]._hour;
+  rtc.setAlarm1(DateTime(2023,11,3,_hour,timerData[index]._minute , 0) , DS3231_A1_Hour);
+  
+}
+
+void RTCloop(){
+  if (rtc.alarmFired(1)) {
+    rtc.clearAlarm(1);
+    clearScreen();
+    printToLCD(3 , 0 , "Feeding Now");
+    delay(2000);
+  }
 }

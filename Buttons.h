@@ -1,4 +1,4 @@
-const int selectBtn = 2;
+const int selectBtn = 6;
 const int modeBtn = 3;
 const int upBtn = 4;
 const int downBtn = 5;

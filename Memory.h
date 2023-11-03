@@ -1,11 +1,10 @@
 #include <EEPROM.h>
 
-TimeData timerData[3];
-
 void initEEPROM(){
   for (int i = 0; i <= 2; i++) {
     EEPROM.get(i * 10, timerData[i]);
   }
+  setAlarm();
 }
 
 void saveData(int address){
@@ -14,5 +13,8 @@ void saveData(int address){
 
   EEPROM.put(address * 10, timeData);
   timerData[address] = timeData;
+  currentAlarmIndex = 0;
+  rtc.clearAlarm(1);
+  setAlarm();
   delay(2000);
 }

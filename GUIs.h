@@ -20,20 +20,23 @@ void Screen01(){
 }
 
 void Screen02(){
+  int _hourTemp = (timerData[0]._hour % 12 == 0) ? 12 : timerData[0]._hour % 12;
   printToLCD(3 , 0 , "Feeding #1");
-  sprintf(details, "%02d:%02d %cM  ", timerData[0]._hour,timerData[0]._minute,timerData[0]._amp);
+  sprintf(details, "%02d:%02d %cM  ", _hourTemp,timerData[0]._minute,timerData[0]._amp);
   printToLCD(4 , 1,details);
 }
 
 void Screen03(){
+  int _hourTemp = (timerData[1]._hour % 12 == 0) ? 12 : timerData[1]._hour % 12;
   printToLCD(3 , 0 , "Feeding #2");
-  sprintf(details, "%02d:%02d %cM  ", timerData[1]._hour,timerData[1]._minute,timerData[1]._amp);
+  sprintf(details, "%02d:%02d %cM  ", _hourTemp,timerData[1]._minute,timerData[1]._amp);
   printToLCD(4 , 1,details);
 }
 
 void Screen04(){
+  int _hourTemp = (timerData[2]._hour % 12 == 0) ? 12 : timerData[2]._hour % 12;
   printToLCD(3 , 0 , "Feeding #3");
-  sprintf(details, "%02d:%02d %cM  ", timerData[2]._hour,timerData[2]._minute,timerData[2]._amp);
+  sprintf(details, "%02d:%02d %cM  ", _hourTemp,timerData[2]._minute,timerData[2]._amp);
   printToLCD(4 , 1,details);
 }
 
@@ -61,7 +64,7 @@ void loopMainScreens(){
 
 void modeSelect(int _mode , bool cls , int selector,bool selectorCls){
   if (cls){
-    _hour = timerData[_mode - 1]._hour;
+    _hour = (timerData[_mode - 1]._hour % 12 == 0) ? 12 : timerData[_mode - 1]._hour % 12;
     _minute = timerData[_mode - 1]._minute;
     _amp = timerData[_mode - 1]._amp;
     _weight = timerData[_mode - 1]._weight;
@@ -136,8 +139,10 @@ void setTimer(int _mode, int selector, bool selectorCls){
     }
     printToLCD(1,0, "Press Mode to");
     printToLCD(1,1, "Save Settings");
-    
-    timeData._hour = _hour;
+
+    if(timeData._amp == 'P'){
+      timeData._hour = _hour + 12;
+    }
     timeData._minute = _minute;
     timeData._amp = _amp;
     timeData._weight = _weight;
