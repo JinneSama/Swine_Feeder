@@ -1,7 +1,7 @@
-const int selectBtn = 6;
-const int modeBtn = 3;
-const int upBtn = 4;
-const int downBtn = 5;
+const int selectBtn = 4;
+const int modeBtn = 5;
+const int upBtn = 6;
+const int downBtn = 7;
 
 int selectState = 1;
 int modeState = 1;

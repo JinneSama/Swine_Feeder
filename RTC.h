@@ -73,6 +73,7 @@ void RTCloop(){
     rtc.clearAlarm(1);
     clearScreen();
     printToLCD(3 , 0 , "Feeding Now");
+    //startProcess();
     delay(2000);
   }
 }

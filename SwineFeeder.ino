@@ -5,6 +5,7 @@
 #include "Buttons.h"
 #include "MotorControl.h"
 #include "LoadCell.h"
+#include "Process.h"
 
 void setup() { 
  initRTC();
